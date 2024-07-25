@@ -1,3 +1,5 @@
+use clackit::cli::parse_args;
+
 fn main() {
-    println!("Hello, world!");
+    parse_args();
 }
