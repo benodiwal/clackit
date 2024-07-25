@@ -1,7 +1,9 @@
 use cli::parse_args;
 
-pub mod cli;
-pub mod constants;
+mod cli;
+mod keys;
+mod sounds;
+mod constants;
 
 pub fn start() {
     let args = parse_args();
@@ -9,4 +11,4 @@ pub fn start() {
     let volume = args.volume.unwrap_or(constants::DEFAULT_VOLUME);
     println!("{}", soundpack);
     println!("{}", volume);
-}
+} 
