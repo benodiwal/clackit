@@ -4,10 +4,18 @@ use utils::File;
 mod utils;
 
 pub fn start(soundpack: String, vol: u16) {
-    unsafe {
-        use libc::nice;
-        nice(-20);
-    };
+    
+    {
+        #[cfg(any(target_os = "macos", target_os = "linux"))]
+        unsafe {
+            use libc::nice;
+            if nice(-20) != 0 {
+                eprintln!("Failed to set process priority");
+            } else {
+                println!("Process priority set successfully.");
+            }
+        };
+    }
 
     let mut file = File { content: None };
     file.initialize(soundpack.clone());
