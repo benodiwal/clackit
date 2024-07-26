@@ -6,7 +6,7 @@ use super::utils::HELP_MESSAGES;
 #[clap(
     name = "clackit",
     version,
-    about = "A rust cli tool to make a normal keyboard to sound like a  mechanical keyboard"
+    about = "A rust cli tool to make a normal keyboard sound like a  mechanical keyboard"
 )]
 
 pub struct Args {

@@ -1,8 +1,10 @@
 [package]
 name = "clackit"
-description = "A rust cli tool to make a normal keyboard to sound like a  mechanical keyboard"
+description = "A rust cli tool make a normal keyboard to sound like a  mechanical keyboard"
 version = "0.1.0"
 authors = ["Sachin Beniwal <sachinbeniwal0101@gmail.com>"]
+readme = "README.md"
+keywords = ["keyboard", "mechanical", "cli", "sound"]
 license = "MIT"
 edition = "2021"
 
