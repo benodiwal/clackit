@@ -23,26 +23,32 @@ pub fn play_sound(soundpack: String, vol: u16) {
 }
 
 pub fn worker(receiver: Receiver<String>) {
-    let (_, stream_handle) = OutputStream::try_default().unwrap();
-    while let Ok(raw) = receiver.recv_timeout(Duration::from_secs(20)) {
-        let data: Vec<&str> = raw.split("|").collect();
-        let name = data[0].to_string();
-        let volume = data[1].parse::<u16>().expect("Cannot parse volume");
-        let file_name = name.clone();
-        let source = {
-            let mut sound_map = GLOBAL_DATA.lock().unwrap();
-            sound_map
-                .entry(name.clone())
-                .or_insert_with(|| {
-                    let file = BufReader::new(File::open(&file_name[..]).unwrap());
-                    Decoder::new(file).unwrap().buffered()
-                })
-                .clone()
-        };
-        let sink = Sink::try_new(&stream_handle).unwrap();
-        let vol = volume as f32 / 100.0;
-        sink.set_volume(vol);
-        sink.append(source);
-        sink.detach();
+    match OutputStream::try_default() {
+        Ok((_, stream_handle)) => {
+            while let Ok(raw) = receiver.recv_timeout(Duration::from_secs(20)) {
+                let data: Vec<&str> = raw.split("|").collect();
+                let name = data[0].to_string();
+                let volume = data[1].parse::<u16>().expect("Cannot parse volume");
+                let file_name = name.clone();
+                let source = {
+                    let mut sound_map = GLOBAL_DATA.lock().unwrap();
+                    sound_map
+                        .entry(name.clone())
+                        .or_insert_with(|| {
+                            let file = BufReader::new(File::open(&file_name[..]).unwrap());
+                            Decoder::new(file).unwrap().buffered()
+                        })
+                        .clone()
+                };
+                let sink = Sink::try_new(&stream_handle).unwrap();
+                let vol = volume as f32 / 100.0;
+                sink.set_volume(vol);
+                sink.append(source);
+                sink.detach();
+            }
+        },
+        Err(e) => {
+            eprintln!("Failed to get default output stream: {:?}", e);
+        }
     }
 }
