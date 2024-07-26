@@ -4,6 +4,7 @@ mod cli;
 mod keys;
 mod sounds;
 mod constants;
+mod engine;
 
 pub fn start() {
     let args = parse_args();
