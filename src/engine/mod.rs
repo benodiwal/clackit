@@ -1,5 +1,4 @@
 use rdev::{listen, Event};
-use serde_json::{Map, Value};
 use utils::File;
 
 mod utils;
@@ -22,7 +21,4 @@ pub fn start(soundpack: String, vol: u16) {
     if let Err(err) = listen(event_handler) {
         println!("Error: {:?}", err);
     }
-}
-
-fn callback(event: Event, json_file: Map<String, Value>, directory: String, vol: u16) {
 }
